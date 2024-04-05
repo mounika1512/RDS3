@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Distribution System</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: lightblue; /* Changed background color to light blue */
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0px auto;
+        padding: 20px;
+        background-color: #fff; /* Changed background color to white */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        color: black;
+        text-align: center; 
+    }
+    #datepicker {
+        width: 100%; /* Adjusted width */
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+    #status-search {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        background-color: #F2F2F2;
+        
+    }
+    th {
+        background-color: lightblue;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Reports Distribution System</h1>
+    <label for="statusSearch">Search by Status:</label>
+    <input type="text" id="datepicker" oninput="searchByStatus(this.value)">
+
+    <br>
+    <label for="statusSearch">Search by Status:</label>
+    <input type="text" id="statusSearch" oninput="searchByStatus(this.value)">
+
+    <table id="random-table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Subproduct</th>
+                <th>As of Date</th>
+                <th>Status</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Generating 200 random number values with task, status -->
+            <!-- Using JavaScript to generate random numbers -->
+            <script>
+                // Function to update status randomly
+                function updateStatus() {
+                    $("#random-table tbody tr").each(function() {
+                        var statusCell = $(this).find("td:eq(3)");
+                        var currentStatus = statusCell.text().trim();
+                        // Update status randomly
+                        statusCell.text(Math.random() < 0.5 ? "Done" : "Fail");
+                    });
+                }
+
+                // Function to filter rows by status
+                function searchByStatus(status) {
+                    $("#random-table tbody tr").each(function() {
+                        var statusCell = $(this).find("td:eq(3)");
+                        var row = $(this);
+                        if (statusCell.text().toLowerCase().includes(status.toLowerCase())) {
+                            row.show();
+                        } else {
+                            row.hide();
+                        }
+                    });
+                }
+
+                // Initialize datepicker
+                $(function() {
+                    $("#datepicker").datepicker({
+                        onSelect: function(dateText) {
+                            updateAsOfDate(dateText);
+                        },
+                        appendTo: "#random-table" // Append datepicker to the table
+                    });
+                });
+
+                // Update status every minute
+                setInterval(updateStatus, 60000);
+
+                function updateAsOfDate(date) {
+                    $("#random-table tbody tr").each(function() {
+                        $(this).find("td:eq(2)").text(date);
+                    });
+                }
+
+                // Initialize table with current date and random status
+                updateAsOfDate(new Date().toLocaleDateString());
+
+                for (let i = 1; i <= 200; i++) {
+                    document.write("<tr>");
+                    document.write("<td>Task " + i + "</td>");
+                    document.write("<td>Product " + i + "</td>");
+                    document.write("<td id='as-of-date'>" + new Date().toLocaleDateString() + "</td>"); // Displaying the common date
+                    document.write("<td>" + (Math.random() < 0.5 ? "Done" : "Fail") + "</td>"); // Generating random status
+                    document.write("<td>" + Math.floor(Math.random() * 1000) + "</td>"); // Generating random numbers between 0 and 999
+                    document.write("</tr>");
+                }
+            </script>
+        </tbody>
+    </table>
+</body>
+</html>
